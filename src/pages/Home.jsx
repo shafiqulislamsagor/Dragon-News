@@ -1,7 +1,10 @@
+import NewsHading from "../components/NewsHading";
+
 const Home = () => {
     return (
-        <div>
-            Home
+        <div className="w-[95%] lg:w-5/6 mx-auto">
+
+            <NewsHading/>
         </div>
     );
 };

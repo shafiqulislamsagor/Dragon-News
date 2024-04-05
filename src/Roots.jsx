@@ -13,7 +13,6 @@ const Roots = () => {
                 <Theme />
             </div>
             <Title />
-            
             <Outlet />
         </div>
     );
