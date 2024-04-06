@@ -1,18 +1,24 @@
 import { Link } from "react-router-dom";
 import Logo from '../assets/Dragon with Text in Shield.svg'
 import { AwesomeButton } from 'react-awesome-button';
-import { signUpMethod } from "../firebase/Users";
+import { toast } from 'react-hot-toast';
+import { useContext } from "react";
+import { CreateContextApi } from "../context/ContextApi";
 
 const Register = () => {
+    const context = useContext(CreateContextApi)
+    const {signUpMethod,signOutMethod} = context
     const fromHandle = e =>{
         e.preventDefault()
         const email = e.target.email.value;
         const password = e.target.password.value;
         const confirmPassword = e.target.confirmPassword.value;
-        console.log(email,password,confirmPassword);
         if(password === confirmPassword){
             signUpMethod(email,password)
+            signOutMethod()
+            return
         }
+        toast.error('confirm password incorrect...!')
     }
     return (
         <div>
@@ -22,7 +28,7 @@ const Register = () => {
                     <img className="w-8 h-8 mr-2" src={Logo} alt="logo" />
                         Dragon News
                     </a>
-                    <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-purple-950 dark:border-gray-700">
+                    <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-purple-950 dark:bg-purple-950 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 Create an account

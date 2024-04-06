@@ -1,10 +1,64 @@
 import PropTypes from 'prop-types';
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { toast } from 'react-hot-toast';
+import Auth from './../firebase/firebase.config';
 
 export const CreateContextApi = createContext(null)
 
-const ContextApi = ({children}) => {
-    const contextValue = {}
+const ContextApi = ({ children }) => {
+    const [users , setUsers] = useState(null)
+
+    const signUpMethod = (email, password) => {
+        createUserWithEmailAndPassword(Auth, email, password)
+            .then(success => {
+                console.log('success msg', success.user);
+                toast.success('Account Create Successfully...!!')
+            })
+            .catch(error => {
+                console.log('error mas', error.message);
+                toast.error('Already Account Exited...!!')
+            })
+    }
+
+
+    const signInMethod = (email, password) => {
+        signInWithEmailAndPassword(Auth, email, password)
+            .then(success => {
+                toast.success('SignIn User Successfully..!!')
+                console.log('user login', success.user);
+            })
+            .catch(error => {
+                toast.error('Something wrong..please Try again..!!')
+                console.log('user error', error.message);
+            })
+    }
+
+    const signOutMethod = () =>{
+        signOut(Auth)
+        .then(success=>{
+            console.log(success);
+        })
+        .catch(error=>{
+            toast.error('please Try again..!')
+            console.log(error);
+        })
+    }
+
+    useEffect(()=>{
+        const unSubscribe = onAuthStateChanged(Auth,user=>{
+            const uid = user.uid
+                console.log(uid);
+                setUsers(user)
+
+        })
+        return ()=>{
+            unSubscribe()
+        }
+    },[])
+
+
+    const contextValue = {signInMethod,signUpMethod,users,signOutMethod}
     return (
         <CreateContextApi.Provider value={contextValue}>
             {children}

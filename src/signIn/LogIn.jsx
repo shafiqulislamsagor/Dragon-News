@@ -1,13 +1,18 @@
 import { Link } from 'react-router-dom';
 import Logo from '../assets/Dragon with Text in Shield.svg'
 import { AwesomeButton } from 'react-awesome-button';
+import { useContext } from 'react';
+import { CreateContextApi } from '../context/ContextApi';
 
 const LogIn = () => {
+    const context = useContext(CreateContextApi)
+    const {signInMethod} = context
     const fromHandle = e =>{
         e.preventDefault()
         const email = e.target.email.value
         const password = e.target.password.value
         console.log(email,password);
+        signInMethod(email,password)
     }
     return (
         <div>
