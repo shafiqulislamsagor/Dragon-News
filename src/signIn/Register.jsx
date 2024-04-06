@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from '../assets/Dragon with Text in Shield.svg'
 import { AwesomeButton } from 'react-awesome-button';
+import { signUpMethod } from "../firebase/Users";
 
 const Register = () => {
     const fromHandle = e =>{
@@ -9,6 +10,9 @@ const Register = () => {
         const password = e.target.password.value;
         const confirmPassword = e.target.confirmPassword.value;
         console.log(email,password,confirmPassword);
+        if(password === confirmPassword){
+            signUpMethod(email,password)
+        }
     }
     return (
         <div>
