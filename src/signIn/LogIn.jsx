@@ -6,13 +6,14 @@ import { CreateContextApi } from '../context/ContextApi';
 
 const LogIn = () => {
     const context = useContext(CreateContextApi)
-    const {signInMethod} = context
-    const fromHandle = e =>{
+    const {signInMethod,homePage} = context
+    const fromHandle = async e =>{
         e.preventDefault()
         const email = e.target.email.value
         const password = e.target.password.value
+        await signInMethod(email,password)
         console.log(email,password);
-        signInMethod(email,password)
+        homePage()
     }
     return (
         <div>

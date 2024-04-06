@@ -7,10 +7,13 @@ import { CreateContextApi } from '../context/ContextApi';
 const PrivetRoutes = ({children}) => {
     const context = useContext(CreateContextApi)
     const {users} = context
+    console.log(users);
     if(users){
-        {children}
+        return (
+            <div>{children}</div>
+        )
     }
-    return <Navigate to='/register'></Navigate>
+    return <Navigate to='/login'></Navigate>
 };
 
 PrivetRoutes.propTypes = {

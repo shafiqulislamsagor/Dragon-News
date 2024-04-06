@@ -7,18 +7,20 @@ import { CreateContextApi } from "../context/ContextApi";
 
 const Register = () => {
     const context = useContext(CreateContextApi)
-    const {signUpMethod,signOutMethod} = context
+    const {signUpMethod,signOutMethod,users} = context
     const fromHandle = e =>{
         e.preventDefault()
         const email = e.target.email.value;
         const password = e.target.password.value;
         const confirmPassword = e.target.confirmPassword.value;
-        if(password === confirmPassword){
-            signUpMethod(email,password)
-            signOutMethod()
-            return
+        if(!users){
+            if(password === confirmPassword){
+                signUpMethod(email,password)
+                signOutMethod()
+                return
+            }
+            toast.error('confirm password incorrect...!')
         }
-        toast.error('confirm password incorrect...!')
     }
     return (
         <div>

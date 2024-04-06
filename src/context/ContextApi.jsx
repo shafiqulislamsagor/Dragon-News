@@ -3,11 +3,13 @@ import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { toast } from 'react-hot-toast';
 import Auth from './../firebase/firebase.config';
+import { Navigate } from "react-router-dom"
 
 export const CreateContextApi = createContext(null)
 
 const ContextApi = ({ children }) => {
     const [users , setUsers] = useState(null)
+    const [loading , setLoading] = useState(true)
 
     const signUpMethod = (email, password) => {
         createUserWithEmailAndPassword(Auth, email, password)
@@ -48,8 +50,9 @@ const ContextApi = ({ children }) => {
     useEffect(()=>{
         const unSubscribe = onAuthStateChanged(Auth,user=>{
             const uid = user.uid
-                console.log(uid);
-                setUsers(user)
+                
+                setUsers(uid)
+                setLoading(false)
 
         })
         return ()=>{
@@ -57,8 +60,12 @@ const ContextApi = ({ children }) => {
         }
     },[])
 
+    const homePage = () =>{
+        return <Navigate to='/'/>
+    }
 
-    const contextValue = {signInMethod,signUpMethod,users,signOutMethod}
+
+    const contextValue = {signInMethod,signUpMethod,users,signOutMethod,homePage,loading}
     return (
         <CreateContextApi.Provider value={contextValue}>
             {children}
